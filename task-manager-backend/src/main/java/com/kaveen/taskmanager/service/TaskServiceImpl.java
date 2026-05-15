@@ -1,5 +1,7 @@
 package com.kaveen.taskmanager.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.kaveen.taskmanager.dto.TaskRequestDto;
@@ -32,6 +34,12 @@ public class TaskServiceImpl implements TaskService{
         TaskEntity savedTaskEntity = taskRepository.save(taskEntity);
         // Convert back to send responseDto to the frontend
         return taskMapper.toResponseDto(savedTaskEntity);
+    }
+
+    @Override
+    public List<TaskResponseDto> getAllTasks(Long userId) {
+        List<TaskEntity> tasks = taskRepository.findAllTasksByUserId(userId);
+         return tasks.stream().map(taskMapper::toResponseDto).toList();
     }
 
 
