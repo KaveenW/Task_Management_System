@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 
 import com.kaveen.taskmanager.dto.TaskRequestDto;
 import com.kaveen.taskmanager.dto.TaskResponseDto;
+import com.kaveen.taskmanager.dto.TaskUpdateRequestDto;
 import com.kaveen.taskmanager.entity.TaskEntity;
+import com.kaveen.taskmanager.entity.TaskEntity.Status;
 import com.kaveen.taskmanager.entity.UserEntity;
 import com.kaveen.taskmanager.mapper.TaskMapper;
 import com.kaveen.taskmanager.repository.TaskRepository;
@@ -41,6 +43,35 @@ public class TaskServiceImpl implements TaskService{
         List<TaskEntity> tasks = taskRepository.findAllTasksByUserId(userId);
          return tasks.stream().map(taskMapper::toResponseDto).toList();
     }
+
+    @Override
+    public void deleteTask(Long taskId) {
+        if(!taskRepository.existsById(taskId)){
+            throw new RuntimeException("Task not found!");
+        }
+        taskRepository.deleteById(taskId);
+    }
+
+    @Override
+    public TaskResponseDto updateTaskStatus(Long taskId, TaskUpdateRequestDto taskDto) {
+        TaskEntity task = taskRepository.findById(taskId).orElseThrow(() -> new RuntimeException("Task not found") );
+
+        if(taskDto.getTitle() != null){
+            task.setTitle(taskDto.getTitle());
+        }
+        
+        if(taskDto.getDescription() != null){
+            task.setDescription(taskDto.getDescription());
+        }
+
+        if(taskDto.getStatus() != null){
+            task.setStatus(Status.valueOf(taskDto.getStatus().toUpperCase()));
+        }
+
+        TaskEntity updatedEntity = taskRepository.save(task);
+        return taskMapper.toResponseDto(updatedEntity);
+    }
+
 
 
     

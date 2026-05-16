@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.kaveen.taskmanager.dto.TaskRequestDto;
 import com.kaveen.taskmanager.dto.TaskResponseDto;
+import com.kaveen.taskmanager.dto.TaskUpdateRequestDto;
 
 public interface TaskService {
 
@@ -11,9 +12,7 @@ public interface TaskService {
 
     List<TaskResponseDto> getAllTasks(Long userId);
 
-    // List<TaskResponseDto> getTaskByUserId(Long userId);
+    TaskResponseDto updateTaskStatus(Long taskId, TaskUpdateRequestDto taskUpdateRequestDto);
 
-    // TaskResponseDto updateTaskStatus(Long taskId, String status);
-
-    // void deleteTask(Long taskId);
+    void deleteTask(Long taskId);
 }
