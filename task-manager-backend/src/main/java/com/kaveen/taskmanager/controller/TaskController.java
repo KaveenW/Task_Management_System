@@ -18,6 +18,8 @@ import com.kaveen.taskmanager.dto.TaskResponseDto;
 import com.kaveen.taskmanager.dto.TaskUpdateRequestDto;
 import com.kaveen.taskmanager.service.TaskService;
 
+import jakarta.validation.Valid;
+
 
 @RestController
 @RequestMapping("/api/tasks")
@@ -30,7 +32,7 @@ public class TaskController {
     }
 
     @PostMapping("/task")
-    public ResponseEntity<TaskResponseDto> createTask(@RequestBody TaskRequestDto request) {
+    public ResponseEntity<TaskResponseDto> createTask(@Valid @RequestBody TaskRequestDto request) {
         TaskResponseDto response = taskService.createTask(request);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
